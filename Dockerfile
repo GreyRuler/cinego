@@ -11,9 +11,15 @@ COPY --from=pre /app .
 
 #RUN apk update && apk add --no-cache postgresql-dev && docker-php-ext-install pdo pdo_pgsql php-imagick imagick
 #RUN apk add --no-cache php-imagick imagick && docker-php-ext-install php-imagick imagick
-RUN pecl install imagick php-imagick; \
-        docker-php-ext-install imagick php-imagick
-
+#RUN pecl install imagick php-imagick; \
+#        docker-php-ext-install imagick php-imagick
+RUN apk add --no-cache --update --virtual .phpize-deps $PHPIZE_DEPS \
+    && apk add --no-cache --update --virtual .all-deps $PHP_MODULE_DEPS \
+    && pecl install imagick php-imagick \
+    && docker-php-ext-enable imagick php-imagick \
+    && rm -rf /tmp/pear \
+    && apk del .all-deps .phpize-deps \
+    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
 # Image config
 ENV SKIP_COMPOSER 1
