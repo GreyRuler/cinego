@@ -15,8 +15,8 @@ COPY --from=pre /app .
 #        docker-php-ext-install imagick php-imagick
 RUN apk add --no-cache --update --virtual .phpize-deps $PHPIZE_DEPS \
     && apk add --no-cache --update --virtual .all-deps $PHP_MODULE_DEPS \
-    && pecl install imagick php-imagick \
-    && docker-php-ext-enable imagick php-imagick \
+    && pecl install php-imagick \
+    && docker-php-ext-enable php-imagick \
     && rm -rf /tmp/pear \
     && apk del .all-deps .phpize-deps \
     && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
