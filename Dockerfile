@@ -25,5 +25,6 @@ ENV REAL_IP_HEADER 1
 ENV APP_ENV production
 ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
+ENV ASSET_URL="https://cinego.onrender.com"
 
 CMD ["/start.sh"]
