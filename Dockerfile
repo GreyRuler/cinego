@@ -9,10 +9,8 @@ FROM richarvey/nginx-php-fpm:latest
 
 COPY --from=pre /app .
 
-RUN apk update && apk add --no-cache postgresql-dev && docker-php-ext-install pdo pdo_pgsql php-imagick imagick
-RUN pecl install imagick; \
-        docker-php-ext-enable imagick
-
+RUN apk update && apk add --no-cache postgresql-dev && docker-php-ext-install pdo pdo_pgsql
+RUN apk add --no-cache php-imagick imagick && docker-php-ext-install php-imagick imagick
 
 # Image config
 ENV SKIP_COMPOSER 1
