@@ -13,7 +13,3 @@ php artisan route:cache
 
 echo "Key generate..."
 php artisan key:generate --show
-
-php -i
-
-php -m

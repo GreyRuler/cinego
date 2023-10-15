@@ -1,4 +1,4 @@
-FROM tangramor/nginx-php8-fpm:php8.2.11_node20.8.0 AS pre
+FROM node:20.8.0-alpine3.17 AS pre
 
 WORKDIR /app
 COPY . .
