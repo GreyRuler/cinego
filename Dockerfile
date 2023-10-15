@@ -13,13 +13,18 @@ COPY --from=pre /app .
 #RUN apk add --no-cache php-imagick imagick && docker-php-ext-install php-imagick imagick
 #RUN pecl install imagick php-imagick; \
 #        docker-php-ext-install imagick php-imagick
-RUN apk add --no-cache --update --virtual .phpize-deps $PHPIZE_DEPS imagemagick-dev libtool \
-    && apk add --no-cache --update --virtual .all-deps $PHP_MODULE_DEPS \
-    && pecl install php-imagick \
-    && docker-php-ext-enable php-imagick \
-    && rm -rf /tmp/pear \
-    && apk del .all-deps .phpize-deps \
-    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+#RUN apk add --no-cache --update --virtual .phpize-deps $PHPIZE_DEPS imagemagick-dev libtool \
+#    && apk add --no-cache --update --virtual .all-deps $PHP_MODULE_DEPS \
+#    && pecl install php-imagick \
+#    && docker-php-ext-enable php-imagick \
+#    && rm -rf /tmp/pear \
+#    && apk del .all-deps .phpize-deps \
+#    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/install-php-extensions && \
+ install-php-extensions php-imagick imagick
 
 # Image config
 ENV SKIP_COMPOSER 1
