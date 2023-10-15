@@ -12,3 +12,7 @@ php artisan migrate
 
 echo "Key generate..."
 php artisan key:generate --show
+
+php -i
+
+php -m
