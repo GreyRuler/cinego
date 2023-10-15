@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CineGo</title>
         @viteReactRefresh
-        @vite('react/main.jsx')
+        @vite('frontend/main.jsx')
     </head>
     <body class="antialiased">
     <div id="root"></div>
