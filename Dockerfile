@@ -27,11 +27,4 @@ ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 ENV ASSET_URL="https://cinego.onrender.com"
 
-ENV DB_CONNECTION=pgsql
-ENV DB_HOST=dpg-cklva92v7m0s73dqq630-a.frankfurt-postgres.render.com
-ENV DB_PORT=5432
-ENV DB_DATABASE=cinego_o06e
-ENV DB_USERNAME=cinego_o06e_user
-ENV DB_PASSWORD=rPHvCoBjeiJKH0FzWiicpCT4H81OnrAp
-
 CMD ["/start.sh"]
