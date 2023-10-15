@@ -1,0 +1,62 @@
+.graph-container {
+    display: flex;
+    font-size: 1.6rem;
+}
+
+.graph-title-tasks {
+    height: 100%;
+}
+
+.graph-title-tasks > .title {
+    height: 80px;
+    padding: 1rem;
+}
+
+.graph-title-task {
+    height: 40px;
+}
+
+.graph-title-tasks > * {
+    border: 1px solid gray;
+    white-space: nowrap;
+    padding: 1rem;
+    align-items: center;
+}
+
+.graph {
+    overflow-x: scroll;
+    overflow-y: visible;
+    padding: 0;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th div.slug, td div.slug {
+    width: 70px;
+    height: 40px;
+    padding: 1rem;
+    border: 1px solid gray;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+tbody tr {
+    position: relative;
+}
+
+.graph-task {
+    position: absolute;
+    height: 28px;
+    top: calc(50% - 14px);
+    border-radius: 3px;
+}
+
+.graph-task button.conf-step__button-trash {
+    top: 50%;
+    left: 100%;
+    transform: translate(calc(-100% - 4px), -50%);
+}
