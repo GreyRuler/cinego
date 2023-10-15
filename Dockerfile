@@ -11,8 +11,8 @@ COPY --from=pre /app .
 
 #RUN apk update && apk add --no-cache postgresql-dev && docker-php-ext-install pdo pdo_pgsql php-imagick imagick
 #RUN apk add --no-cache php-imagick imagick && docker-php-ext-install php-imagick imagick
-RUN pecl install imagick; \
-        docker-php-ext-enable imagick
+RUN pecl install imagick php-imagick; \
+        docker-php-ext-install imagick php-imagick
 
 
 # Image config
