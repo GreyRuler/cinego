@@ -26,11 +26,4 @@ ENV APP_ENV production
 ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 
-#ENV DB_CONNECTION=pgsql
-#ENV DB_HOST=127.0.0.1
-#ENV DB_PORT=5432
-#ENV DB_DATABASE=cinego
-#ENV DB_USERNAME=postgres
-#ENV DB_PASSWORD=qwerty
-
 CMD ["/start.sh"]
