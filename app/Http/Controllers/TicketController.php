@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TicketResource;
 use App\Models\Schedule;
 use App\Models\Ticket;
+use App\Services\TicketService;
 use Illuminate\Http\Request;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TicketController extends Controller
 {
+    public function __construct(private readonly TicketService $ticketService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request, Schedule $schedule)
     {
         $uuid = $request->query('uuid');
-        if (!Ticket::where('qr_code', $uuid)->exists()) {
+        $isExist = $this->ticketService->validateTicket($uuid);
+        if ($isExist) {
             return response('', 404);
         }
-        $clientUrl = $request->header('Origin') . "/schedules/$schedule->id/tickets?uuid=$uuid";
-        $qrCode = base64_encode(QrCode::format('png')->size(300)->generate($clientUrl));
-        return response()->json([
-            'ticket' => new TicketResource($schedule),
-            'qrCode' => $qrCode,
-        ]);
+
+        $ticket = $this->ticketService->ticket($request, $uuid, $schedule);
+        return response()->json($ticket);
     }
 
     /**
@@ -33,21 +34,13 @@ class TicketController extends Controller
     public function store(Request $request, Schedule $schedule)
     {
         $places = $request->get('places');
-
-        $existsTickets = Ticket::where('schedule_id', $schedule->id)
-            ->whereIn('seat_id', $places)->exists();
+        $existsTickets = $this->ticketService->validateTicketStore($places, $schedule);
         if ($existsTickets) {
             return response('Выбранные Вами места уже забронированы', 422);
         }
 
-        $uuid = uuid_create();
-        collect($places)->each(function ($placeId) use ($uuid, $schedule) {
-            Ticket::create([
-                'schedule_id' => $schedule->id,
-                'seat_id' => $placeId,
-                'qr_code' => $uuid,
-            ]);
-        });
+        $uuid = $this->ticketService->storeTicket($request->all(), $schedule);
+
         return response()->json([
             'uuid' => $uuid
         ]);

@@ -17,7 +17,6 @@ class Movie extends Model
         'duration',
         'origin',
         'image',
-        'alt',
         'color',
     ];
 

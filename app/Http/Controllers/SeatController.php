@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hall;
 use App\Models\Seat;
+use App\Services\SeatService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Http\Response;
 
 class SeatController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly SeatService $seatService)
     {
         $this->middleware('auth:sanctum')->except(['index', 'amount']);
     }
@@ -31,20 +32,9 @@ class SeatController extends Controller
      */
     public function store(Request $request, Hall $hall)
     {
-        $hall->seats()->each(function ($seat) {
-            $seat->delete();
-        });
+        $data = $this->seatService->storeSeat($request->all(), $hall);
 
-        $hall->update($request->all());
-
-        $scheme = $request->json('scheme');
-        collect($scheme)->each(function ($row) use ($hall) {
-            collect($row)->each(function ($column) use ($hall) {
-                Seat::create($column);
-            });
-        });
-
-        return response(Hall::all(), 201);
+        return response($data, 201);
     }
 
     /**
@@ -82,12 +72,8 @@ class SeatController extends Controller
      */
     public function amount(Request $request, Hall $hall)
     {
-        $places = $request->get('places');
-        $price = $hall->seats()->whereIn('number', $places)->get()
-            ->map(function (Seat $seat) use ($hall) {
-                $typePlace = $seat->hall->typePlaces->firstWhere('name', $seat->type_place);
-                return $typePlace->price;
-            })->sum();
+        $price = $this->seatService->amountSeat($request->all(), $hall);
+
         return response($price, 200);
     }
 }

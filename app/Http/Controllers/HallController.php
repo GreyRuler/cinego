@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hall;
+use App\Services\HallService;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class HallController extends Controller
 {
+    public function __construct(private readonly HallService $hallService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -53,27 +61,11 @@ class HallController extends Controller
         return response("", 204);
     }
 
-    public function toggleSale()
+    public function toggleSale(): Application|Response|\Illuminate\Contracts\Foundation\Application|ResponseFactory
     {
         $halls = Hall::all();
 
-        if (!$halls->count()) {
-            return response('Нет залов', 422);
-        }
-
-        $isConfiguration = $halls->every(function (Hall $hall) {
-            return $hall->countRow && $hall->typePlaces()->get()->count() >= 2;
-        });
-        if (!$isConfiguration) {
-            return response('Залы не сконфигурированы', 422);
-        }
-
-        $halls = Hall::all();
-        $halls->each(function (Hall $hall) {
-            $hall->update([
-                'active' => !$hall->active
-            ]);
-        });
+        $this->hallService->toggleSale($halls);
 
         return response($halls);
     }

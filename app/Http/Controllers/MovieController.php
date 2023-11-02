@@ -6,12 +6,13 @@ use App\Http\Middleware\SaveFile;
 use App\Models\Movie;
 use App\Models\Schedule;
 use App\Models\Ticket;
+use App\Services\MovieService;
 use Illuminate\Http\Request;
 use Ramsey\Collection\Collection;
 
 class MovieController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly MovieService $movieService)
     {
         $this->middleware([
             SaveFile::class,
@@ -59,9 +60,7 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        $movie->schedules()->each(function (Schedule $schedule) {
-            $schedule->delete();
-        });
+        $movie->schedules()->each(fn(Schedule $schedule) => $schedule->delete());
         $movie->delete();
 
         return response("", 204);
@@ -74,28 +73,9 @@ class MovieController extends Controller
     {
         $from = $request->query('from');
         $to = $request->query('to');
-        $schedules = Schedule::whereBetween('time', [$from, $to])->get();
-        $movies = $schedules->unique(function (Schedule $schedule) {
-            return $schedule->movie_id;
-        })->reduce(function ($carry, Schedule $schedule) {
-            $carry[$schedule->movie_id] = [
-                ...$schedule->movie->toArray(),
-                'halls' => [],
-            ];
-            return $carry;
-        }, []);
-        $moviesWithHalls = $schedules->reduce(function ($carry, Schedule $schedule) {
-            $carry[$schedule->movie_id]['halls'][$schedule->hall_id] = [
-                ...$schedule->hall->toArray(),
-                'movieId' => $schedule->movie_id,
-                'times' => [],
-            ];
-            return $carry;
-        }, $movies);
-        $data = $schedules->reduce(function ($carry, Schedule $schedule) {
-            $carry[$schedule->movie_id]['halls'][$schedule->hall_id]['times'][$schedule->id] = $schedule->time;
-            return $carry;
-        }, $moviesWithHalls);
+
+        $data = $this->movieService->moviesForInterval($from, $to);
+
         return response($data);
     }
 }
