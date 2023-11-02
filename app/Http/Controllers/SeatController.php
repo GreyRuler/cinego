@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hall;
 use App\Models\Seat;
+use App\Repositories\HallRepository;
 use App\Services\SeatService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
@@ -12,7 +13,10 @@ use Illuminate\Http\Response;
 
 class SeatController extends Controller
 {
-    public function __construct(private readonly SeatService $seatService)
+    public function __construct(
+        private readonly SeatService $seatService,
+        private readonly HallRepository $hallRepository,
+    )
     {
         $this->middleware('auth:sanctum')->except(['index', 'amount']);
     }
@@ -24,7 +28,7 @@ class SeatController extends Controller
     {
         $countRow = $request->query('countRow');
         $countColumn = $request->query('countColumn');
-        return $hall->getSeats($countRow, $countColumn);
+        return $this->hallRepository->getSeats($hall, $countRow, $countColumn);
     }
 
     /**

@@ -24,33 +24,6 @@ class Hall extends Model
         return $this->hasMany(Seat::class, 'hall_id');
     }
 
-    public function getSeats($countRow, $countColumn)
-    {
-        $seats = $this->seats()->get();
-        if ($this->countRow == $countRow && $this->countColumn == $countColumn) {
-            return $seats->reduce(function ($carry, $seat) {
-                $carry[$seat->row][$seat->column] = $seat;
-                return $carry;
-            }, []);
-        }
-        return $this->defaultScheme($countRow, $countColumn);
-    }
-
-    public function defaultScheme($countRow, $countColumn): Collection
-    {
-        return collect(range(0, $countRow - 1))->map(function ($item, $row) use ($countColumn) {
-            return collect(range(0, $countColumn - 1))->map(function ($item, $column) use ($countColumn, $row) {
-                return [
-                    'row' => $row,
-                    'column' => $column,
-                    'type_place' => 'disabled',
-                    'hall_id' => $this->id,
-                    'number' => $row * $countColumn + ($column + 1)
-                ];
-            });
-        });
-    }
-
     public function typePlaces(): HasMany
     {
         return $this->hasMany(TypePlace::class, 'hall_id');
