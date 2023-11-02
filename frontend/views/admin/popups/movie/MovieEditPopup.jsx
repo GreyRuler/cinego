@@ -13,7 +13,6 @@ export function MovieEditPopup({movie, onClose}) {
 	const duration = useRef(null)
 	const origin = useRef(null)
 	const file = useRef(null)
-	const alt = useRef(null)
 
 	const form = () => {
 		const items = {
@@ -22,7 +21,6 @@ export function MovieEditPopup({movie, onClose}) {
 			duration: duration.current.value,
 			origin: origin.current.value,
 			file: file.current.files[0],
-			alt: alt.current.value,
 		}
 		const formData = new FormData()
 		for (const [key, value] of Object.entries(items)) {
@@ -46,7 +44,6 @@ export function MovieEditPopup({movie, onClose}) {
 			<Input refInput={duration} attrName={'duration'} title={'Длительность фильма'} type={'number'} value={movie.duration}/>
 			<Input refInput={origin} attrName={'origin'} title={'Страна выпуска'} value={movie.origin}/>
 			<InputFile refInput={file} attrName={'file'} title={'Постер для фильма'} url={movie.image}/>
-			<Input refInput={alt} attrName={'alt'} title={'Название постера'} value={movie.alt}/>
 			<div className="conf-step__buttons text-center">
 				<button className="conf-step__button conf-step__button-accent" onClick={onSubmit}>Сохранить</button>
 				<button className="conf-step__button conf-step__button-regular" onClick={onClose}>Отменить</button>

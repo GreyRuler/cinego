@@ -5,7 +5,7 @@ export default function Movie({movie}) {
         <section className="movie">
             <div className="movie__info">
                 <div className="movie__poster">
-                    <img className="movie__poster-image" alt={movie.alt} src={`${import.meta.env.VITE_API_BASE_URL}/${movie.image}`}/>
+                    <img className="movie__poster-image" alt={`Постер для фильма ${movie.name}`} src={`${import.meta.env.VITE_API_BASE_URL}/${movie.image}`}/>
                 </div>
                 <div className="movie__description">
                     <h2 className="movie__title">{movie.name}</h2>

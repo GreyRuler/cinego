@@ -26,7 +26,7 @@ export function Movie({movie}) {
                 <button className="conf-step__button conf-step__button-edit" onClick={onEdit}></button>
             </div>
             <div className='conf-step__movie-info'>
-                <img className="conf-step__movie-poster" alt={movie.alt} src={`${import.meta.env.VITE_API_BASE_URL}/${movie.image}`}/>
+                <img className="conf-step__movie-poster" alt={`Постер для фильма ${movie.name}`} src={`${import.meta.env.VITE_API_BASE_URL}/${movie.image}`}/>
                 <div className="conf-step__paragraph">
                     <h3 className="conf-step__movie-title">{movie.name}</h3>
                     <p className="conf-step__movie-duration">{movie.duration} минут</p>

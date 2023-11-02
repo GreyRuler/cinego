@@ -12,7 +12,6 @@ export function MovieAddPopup({onClose}) {
     const duration = useRef(null)
     const origin = useRef(null)
     const file = useRef(null)
-    const alt = useRef(null)
 
     const form = () => {
         const items = {
@@ -21,7 +20,6 @@ export function MovieAddPopup({onClose}) {
             duration: duration.current.value,
             origin: origin.current.value,
             file: file.current.files[0],
-            alt: alt.current.value,
             color: Math.floor(Math.random() * 16777215).toString(16),
         }
         const formData = new FormData()
@@ -45,7 +43,6 @@ export function MovieAddPopup({onClose}) {
             <Input refInput={duration} attrName={'duration'} title={'Длительность фильма'} type={'number'}/>
             <Input refInput={origin} attrName={'origin'} title={'Страна выпуска'}/>
             <InputFile refInput={file} attrName={'file'} title={'Постер для фильма'}/>
-            <Input refInput={alt} attrName={'alt'} title={'Название постера'}/>
             <div className="conf-step__buttons text-center">
                 <button className="conf-step__button conf-step__button-accent" onClick={onSubmit}>Добавить фильм
                 </button>

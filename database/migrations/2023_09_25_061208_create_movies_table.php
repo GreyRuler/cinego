@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('duration');
             $table->text('origin');
             $table->text('image');
-            $table->text('alt');
             $table->string('color');
         });
     }
