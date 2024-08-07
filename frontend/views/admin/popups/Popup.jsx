@@ -13,7 +13,7 @@ export function Popup({title, isShow, onClose, children}) {
 						<h2 className="popup__title">
 							{title}
 							<span className="popup__dismiss" onClick={onClose}>
-								<img src="/src/assets/i/close.png" alt="Закрыть"/>
+								Закрыть
 							</span>
 						</h2>
 					</div>
